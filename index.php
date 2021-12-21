@@ -91,7 +91,7 @@ echo"
 </form>
 ";
 echo "</td><td>";
-
+$url = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 foreach($array_resolv AS $my_resolve){
     $results_pecent_without_fraction="";
     $results_pecent_with_fraction="";
@@ -109,8 +109,8 @@ foreach($array_resolv AS $my_resolve){
 
     file_put_contents('Resolve_without_fraction_'.$my_resolve.'.TXT',$results_pecent_without_fraction);
     file_put_contents('Resolve_with_fraction_'.$my_resolve.'.TXT',$results_pecent_with_fraction);
-    echo $_SERVER['REQUEST_URI'].'Resolve_without_fraction'.$my_resolve.'.TXT<br>';
-    echo $_SERVER['REQUEST_URI'].'Resolve_with_fraction'.$my_resolve.'.TXT<br>';
+    echo '<a href="'.$url.'Resolve_without_fraction_'.$my_resolve.'.TXT">'.$url.'Resolve_without_fraction_'.$my_resolve.'.TXT</a><br>';
+    echo '<a href="'.$url.'Resolve_with_fraction_'.$my_resolve.'.TXT">'.$url.'Resolve_with_fraction_'.$my_resolve.'.TXT</a><br>';
 
 }
 echo "</td></tr></table>";
