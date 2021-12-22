@@ -93,54 +93,144 @@ echo"
 echo "</td><td>";
 $url = ((!empty($_SERVER['HTTPS'])) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 
-@unlink(__DIR__."/All_resolve_without_fraction.zip");
-@unlink(__DIR__."/All_resolve_with_fraction.zip");
+@unlink(__DIR__."/All_WIDTH_without_fraction.zip");
+@unlink(__DIR__."/All_WIDTH_with_fraction.zip");
+@unlink(__DIR__."/All_WIDTH_with_round.zip");
+@unlink(__DIR__."/All_HEIGHT_without_fraction.zip");
+@unlink(__DIR__."/All_HEIGHT_with_fraction.zip");
+@unlink(__DIR__."/All_HEIGHT_with_round.zip");
 
 $zip = new ZipArchive;
-$filename = __DIR__."/All_resolve_without_fraction.zip";
+$filename = __DIR__."/All_WIDTH_without_fraction.zip";
 if ($zip->open($filename, ZipArchive::CREATE)!==TRUE) {
     exit("Невозможно открыть <$filename>\n");
 }
 
 $zip2 = new ZipArchive;
-$filename2 = __DIR__."/All_resolve_with_fraction.zip";
+$filename2 = __DIR__."/All_WIDTH_with_fraction.zip";
 if ($zip2->open($filename2, ZipArchive::CREATE)!==TRUE) {
     exit("Невозможно открыть <$filename2>\n");
 }
 
+$zip3 = new ZipArchive;
+$filename3 = __DIR__."/All_WIDTH_with_round.zip";
+if ($zip3->open($filename3, ZipArchive::CREATE)!==TRUE) {
+    exit("Невозможно открыть <$filename3>\n");
+}
+
+
+$zip4 = new ZipArchive;
+$filename4 = __DIR__."/All_HEIGHT_without_fraction.zip";
+if ($zip4->open($filename4, ZipArchive::CREATE)!==TRUE) {
+    exit("Невозможно открыть <$filename4>\n");
+}
+
+$zip5 = new ZipArchive;
+$filename5 = __DIR__."/All_HEIGHT_with_fraction.zip";
+if ($zip5->open($filename5, ZipArchive::CREATE)!==TRUE) {
+    exit("Невозможно открыть <$filename5>\n");
+}
+
+$zip6 = new ZipArchive;
+$filename6 = __DIR__."/All_HEIGHT_with_round.zip";
+if ($zip6->open($filename6, ZipArchive::CREATE)!==TRUE) {
+    exit("Невозможно открыть <$filename6>\n");
+}
+
+
 foreach($array_resolv AS $my_resolv){
-    $results_pecent_without_fraction="0";
-    $results_pecent_with_fraction="0";
+    $results_w_pecent_without_fraction="0";
+    $results_w_pecent_with_fraction="0";
+    $results_w_pecent_with_round="0";
+
+    $results_h_pecent_without_fraction="0";
+    $results_h_pecent_with_fraction="0";
+    $results_h_pecent_with_round="0";
+
     $my_resolve=trim($my_resolv);
     for($i=0.01; $i<0.99; $i=$i+0.01)
     {
         $pos_start = mb_strpos($my_resolve, "x", 0);
         $my_width_set=mb_substr($my_resolve, $pos_start+1, NULL );
-        $result=$my_width_set*$i;
-        $results_without_fraction=number_format((float)$result, 0, '.', '');
-        $results_pecent_with_fraction.="
-".$result; 
-        $results_pecent_without_fraction.="
-".$results_without_fraction;    
+        $my_height_set=mb_substr($my_resolve, 0, $pos_start );
+
+        $result_w=$my_width_set*$i;
+        if(mb_strpos($result_w, ".", 0)==0){
+            $results_w_without_fraction=$result_w;
+        }else{
+            $results_w_without_fraction=mb_substr($result_w, 0, mb_strpos($result_w, ".", 0));//number_format((float)$result_h, 0, '.', '');
+        }
+        $results_w_with_round=round($result_w);
+
+        $result_h=$my_height_set*$i;
+        if(mb_strpos($result_h, ".", 0)==0){
+            $results_h_without_fraction=$result_h;
+        }else{
+            $results_h_without_fraction=mb_substr($result_h, 0, mb_strpos($result_h, ".", 0));//number_format((float)$result_h, 0, '.', '');
+        }
+        $results_h_with_round=round($result_h);
+
+        $results_w_pecent_with_fraction.="
+".$result_w; 
+        $results_w_pecent_without_fraction.="
+".$results_w_without_fraction;
+        $results_w_pecent_with_round.="
+".$results_w_with_round;
+
+        $results_h_pecent_with_fraction.="
+".$result_h; 
+        $results_h_pecent_without_fraction.="
+".$results_h_without_fraction;
+        $results_h_pecent_with_round.="
+".$results_h_with_round;
+
     }
-    $results_pecent_without_fraction.="
+
+    $results_w_pecent_without_fraction.="
 ".$my_width_set;
-        $results_pecent_with_fraction.="
+        $results_w_pecent_with_fraction.="
+".$my_width_set;
+    $results_w_pecent_with_round.="
 ".$my_width_set;
 
-    file_put_contents('Resolve_without_fraction_'.$my_resolve.'.TXT',$results_pecent_without_fraction);
-    $zip->addFile("Resolve_without_fraction_".$my_resolve.".TXT");
-    file_put_contents('Resolve_with_fraction_'.$my_resolve.'.TXT',$results_pecent_with_fraction);
-    $zip2->addFile("Resolve_with_fraction_".$my_resolve.".TXT");
+    $results_h_pecent_without_fraction.="
+".$my_height_set;
+        $results_h_pecent_with_fraction.="
+".$my_height_set;
+    $results_h_pecent_with_round.="
+".$my_height_set;
+
+
+    $zip->addFromString($my_width_set.'.TXT', $results_w_pecent_without_fraction);
+    $zip2->addFromString($my_width_set.'.TXT',  $results_w_pecent_with_fraction);
+    $zip3->addFromString($my_width_set.'.TXT',  $results_w_pecent_with_round);
+
+    $zip4->addFromString($my_height_set.'.TXT', $results_h_pecent_without_fraction);
+    $zip5->addFromString($my_height_set.'.TXT',  $results_h_pecent_with_fraction);
+    $zip6->addFromString($my_height_set.'.TXT',  $results_h_pecent_with_round);
+
+    // file_put_contents($my_width_set.'.TXT',$results_w_pecent_without_fraction);
+    // $zip->addFile("Resolve_without_fraction_".$my_resolve.".TXT");
+    // file_put_contents('Resolve_with_fraction_'.$my_resolve.'.TXT',$results_w_pecent_with_fraction);
+    // $zip2->addFile("Resolve_with_fraction_".$my_resolve.".TXT");
     // echo '<a href="'.$url.'Resolve_without_fraction_'.$my_resolve.'.TXT">'.$url.'Resolve_without_fraction_'.$my_resolve.'.TXT</a><br>';
     // echo '<a href="'.$url.'Resolve_with_fraction_'.$my_resolve.'.TXT">'.$url.'Resolve_with_fraction_'.$my_resolve.'.TXT</a><br>';
 
 }
-echo '<a href="'.$url.'All_resolve_without_fraction.zip">'.$url.'All_resolve_without_fraction.zip</a><br>';
-echo '<a href="'.$url.'All_resolve_with_fraction.zip">'.$url.'All_resolve_with_fraction.zip</a><br>';
+echo '<a href="'.$url.'All_WIDTH_without_fraction.zip">'.$url.'All_WIDTH_without_fraction.zip</a><br>';
+echo '<a href="'.$url.'All_WIDTH_with_fraction.zip">'.$url.'All_WIDTH_with_fraction.zip</a><br>';
+echo '<a href="'.$url.'All_WIDTH_with_fraction.zip">'.$url.'All_WIDTH_with_round.zip</a><br>';
+
+echo '<a href="'.$url.'All_HEIGHT_without_fraction.zip">'.$url.'All_HEIGHT_without_fraction.zip</a><br>';
+echo '<a href="'.$url.'All_HEIGHT_with_fraction.zip">'.$url.'All_HEIGHT_with_fraction.zip</a><br>';
+echo '<a href="'.$url.'All_HEIGHT_with_fraction.zip">'.$url.'All_HEIGHT_with_round.zip</a><br>';
 echo "
 </td></tr></table>";
 
     $zip->close();
     $zip2->close();
+    $zip3->close();
+    $zip4->close();
+    $zip5->close();
+    $zip6->close();
 ?>
