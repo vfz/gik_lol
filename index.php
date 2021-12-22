@@ -219,11 +219,11 @@ foreach($array_resolv AS $my_resolv){
 }
 echo '<a href="'.$url.'All_WIDTH_without_fraction.zip">'.$url.'All_WIDTH_without_fraction.zip</a><br>';
 echo '<a href="'.$url.'All_WIDTH_with_fraction.zip">'.$url.'All_WIDTH_with_fraction.zip</a><br>';
-echo '<a href="'.$url.'All_WIDTH_with_fraction.zip">'.$url.'All_WIDTH_with_round.zip</a><br>';
+echo '<a href="'.$url.'All_WIDTH_with_round.zip">'.$url.'All_WIDTH_with_round.zip</a><br>';
 
 echo '<a href="'.$url.'All_HEIGHT_without_fraction.zip">'.$url.'All_HEIGHT_without_fraction.zip</a><br>';
 echo '<a href="'.$url.'All_HEIGHT_with_fraction.zip">'.$url.'All_HEIGHT_with_fraction.zip</a><br>';
-echo '<a href="'.$url.'All_HEIGHT_with_fraction.zip">'.$url.'All_HEIGHT_with_round.zip</a><br>';
+echo '<a href="'.$url.'All_HEIGHT_with_round.zip">'.$url.'All_HEIGHT_with_round.zip</a><br>';
 echo "
 </td></tr></table>";
 
